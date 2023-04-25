@@ -1,0 +1,28 @@
+.list-group button{
+    margin: 2px;
+    box-shadow: 1px 1px 1px black;
+}
+main {
+    max-width: 2000px;
+    margin: 5px auto;
+}
+.row {
+    margin: 5px;
+}
+#banner {
+text-align: center;
+color: aliceblue;
+background: linear-gradient(to left, #04028a, #537bc5);
+padding: 8px;
+}
+#search-btn {
+    text-align: center;
+    color: aliceblue;
+    background: linear-gradient(to left, #04028a, #537bc5);
+    box-shadow: 1px 1px 1px black;
+    margin: 2px;
+    min-width: 110px;
+}
+h2 {
+    font-size: 1.7rem;
+}
