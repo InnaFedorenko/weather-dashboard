@@ -7,6 +7,7 @@ var API_KEY = '6180d0bfb66b0a537a54cd4b60470c4d';
 
 let cityName = '';
 let searchBtn = '';
+var cityBtnList = [];
 
 // function getCurrentWeather(inputFromField);
 // {
@@ -63,8 +64,8 @@ let searchBtn = '';
  */
 function searchCity(button, city) {
 
-    console.log(button +'button clicked!' + city);
-    renderCityButton(button, city);
+    console.log(button + 'button clicked!' + city);
+    // renderCityButton(button, city);
     return;
 }
 
@@ -74,48 +75,69 @@ function init() {
     //ToDo - reads buttons from local storage
 
 }
-function renderCityButton (button, city) {
-    console.log('render city button');
-    return;
+function renderCityButton(city) {
+    // Create a new button element with text and an ID
+    if ($.inArray(city, cityBtnList) !== -1) {
+        return; // Exit the function
+    } else {
+        console.log('User input does not match any array values.');
+        var newButton = $('<button>', {
+            id: cityBtnList.length, 
+            class: 'btn btn-secondary',
+            text: city
+        });
+
+        // Append the new button element to the list-group div
+        $('.list-group').append(newButton);
+        console.log('render city button');
+        return;
+        // Continue with the function
+    }
+
 }
 
 $(document).ready(function () {
     init();
 
 
-    var cityBtnList = [];
+
 
     $('#searchBtn').click(function () {
         //console.log('search button is selected - 0');
         searchBtn = $(this).attr('id');
         cityName = $('#searchInput').val();
         if (!cityName) return;
-        searchCity( searchBtn, cityName);
-        //ToDo - render new element in cityBtnList
+        //This function initiates weather search
+        searchCity(searchBtn, cityName);
+        //This function adds new button with the city name from user search
+        renderCityButton(cityName);
+        // Update array with city names
         cityBtnList.push(cityName);
-        console.log (cityBtnList);
-        renderCityButton();
+        // save city names to local storage
         localStorage.setItem('searchHistory', JSON.stringify(cityBtnList));
+        // Clear user input
+        cityName = '';
+        $('#searchInput').val(cityName);
         //ToDo - execute weather search
     });
     $('.list-group button').each(function () {
         // 
-        
+
         $(this).click(function () {
             searchBtn = $(this).attr('id');
             cityName = $(this).text();
-           // console.log($(this).text()+' button is selected');
+            // console.log($(this).text()+' button is selected');
             searchCity(searchBtn, cityName);
             //ToDo - render new element
             //ToDo - execute weather search
         });
-    //     // Get the ID of the button
-    //     var buttonID = $(this).attr('id');
-    //     // Get the text content of the button
-    //     var buttonText = $(this).text();
-    //     // Log the ID and text content of the button to the console
-    //     console.log('Button ID: ' + buttonID + ', Text Content: ' + buttonText);
-    //     searchCity(searchBtn, cityName);
+        //     // Get the ID of the button
+        //     var buttonID = $(this).attr('id');
+        //     // Get the text content of the button
+        //     var buttonText = $(this).text();
+        //     // Log the ID and text content of the button to the console
+        //     console.log('Button ID: ' + buttonID + ', Text Content: ' + buttonText);
+        //     searchCity(searchBtn, cityName);
     });
     return;
 });
