@@ -12,17 +12,31 @@ main {
 #banner {
 text-align: center;
 color: aliceblue;
-background: linear-gradient(to left, #04028a, #537bc5);
+background: linear-gradient(to left, #020136, #537bc5);
 padding: 8px;
 }
 #search-btn {
     text-align: center;
     color: aliceblue;
-    background: linear-gradient(to left, #04028a, #537bc5);
+    background: linear-gradient(to left, #020136, #537bc5);
     box-shadow: 1px 1px 1px black;
     margin: 2px;
     min-width: 110px;
 }
 h2 {
     font-size: 1.7rem;
+}
+p {
+    font-size: 1.3rem;
+}
+.card-img-top {
+    width: 10%;
+}
+
+#current-weather {
+    border: 2px solid  #020136;
+}
+.card-body {
+    background-color: #020136;
+    color: azure;
 }
