@@ -23,18 +23,18 @@ function getCurrentWeather(city) {
         if ($("#imgCurrent").length > 0) {
             // If there are, remove them
             $("#imgCurrent").remove();
-          }
+        }
         var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', iconUrl).attr('alt', 'weather icon').attr('id', 'imgCurrent');
         $('#current-flex-box').append(icon);
         $("#tempCurrent").text(tempF);
         $("#windCurrent").text(windSpeedMph);
         $("#humidityCurrent").text(humidity);
-        
+
         if ($("#five-days-weather .card").length > 0) {
             // If there are, remove them
             $("#five-days-weather .card").remove();
             $("#five-days-weather").remove();
-          }
+        }
         //Get data for next five days
         var div = $('<div>').attr('id', 'five-days-weather').addClass('d-flex flex-wrap justify-content-between align-items-center border-2-purple');
         $('#parrentDiv').append(div);
@@ -48,20 +48,20 @@ function getCurrentWeather(city) {
             var forecastWindSpeedMph = forecastData.wind.speed;
             var forecastHumidity = forecastData.main.humidity;
             //create cards container
-                var card = $('<div>').addClass('card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2');
-                var cardBody = $('<div>').addClass('card-body');
-                var date = $('<h5>').addClass('card-date').text(date).attr('id', 'forecast-date-' + i);
-                var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', forecastIconUrl).attr('alt', 'weather icon').attr('id', 'forecast-icon-' + i);
-                var temp = $('<p>').addClass('card-temp').text('Temp: '+forecastTempF + '°F').attr('id', 'forecast-temp-f-' + i);
-                var wind = $('<p>').addClass('card-wind').text('Wind: '+forecastWindSpeedMph+ 'MPH').attr('id', 'forecast-wind-mph-' + i);
-                var humidity = $('<p>').addClass('card-humidity').text('Humidity: '+ forecastHumidity +'%').attr('id', 'forecast-humidity-' + i);
-                cardBody.append(date, icon, temp, wind, humidity);
-                card.append(cardBody);
-                div.append(card);
+            var card = $('<div>').addClass('card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2');
+            var cardBody = $('<div>').addClass('card-body');
+            var date = $('<h5>').addClass('card-date').text(date).attr('id', 'forecast-date-' + i);
+            var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', forecastIconUrl).attr('alt', 'weather icon').attr('id', 'forecast-icon-' + i);
+            var temp = $('<p>').addClass('card-temp').text('Temp: ' + forecastTempF + '°F').attr('id', 'forecast-temp-f-' + i);
+            var wind = $('<p>').addClass('card-wind').text('Wind: ' + forecastWindSpeedMph + 'MPH').attr('id', 'forecast-wind-mph-' + i);
+            var humidity = $('<p>').addClass('card-humidity').text('Humidity: ' + forecastHumidity + '%').attr('id', 'forecast-humidity-' + i);
+            cardBody.append(date, icon, temp, wind, humidity);
+            card.append(cardBody);
+            div.append(card);
             $('#five-days-weather').append(div);
 
         }
-    }).fail(function(xhr, status, error) {
+    }).fail(function (xhr, status, error) {
         var response = xhr.responseJSON;
         if (response && response.cod && response.cod !== '200') {
             alert("Error: " + response.message);
@@ -76,7 +76,7 @@ function getCurrentWeather(city) {
  * This function  search city based on the user input and adding city button for predefined search
  */
 function searchCity(button, city) {
-    console.log(button + 'button clicked!' + city);
+    // console.log(button + 'button clicked!' + city);
     getCurrentWeather(city);
     // renderCityButton(button, city);
     return;
@@ -92,7 +92,7 @@ function renderCityButton(city) {
             class: 'btn btn-secondary',
             text: city
         });
-          // Add the onclick event to the new button
+        // Add the onclick event to the new button
 
         // Append the new button element to the list-group div
         $('.list-group').append(newButton);
@@ -100,10 +100,28 @@ function renderCityButton(city) {
     }
 
 }
+function init() {
+    console.log('read data from local Storage');
+    var cityBtnList = JSON.parse(localStorage.getItem('searchHistory'));
+    console.log(cityBtnList);
+    // Generate buttons for each city name
+    for (var i = 0; i < cityBtnList.length; i++) {
+        var cityName = cityBtnList[i];
+        console.log(cityName);
+        var newButton = $('<button>', {
+            id: i,
+            class: 'btn btn-secondary',
+            text: cityName
+        });
+        // Append the new button element to the list-group div
+        $('.list-group').append(newButton);
+     }
+    return;
+}
 
 $(document).ready(function () {
-    //init();
-   // console.log('other buttons list 0');
+    init();
+    // console.log('other buttons list 0');
     $('#searchBtn').click(function () {
         //console.log('search button is selected - 0');
         searchBtn = $(this).attr('id');
@@ -124,9 +142,9 @@ $(document).ready(function () {
     });
 });
 
-$("#buttons-list").on("click", "button", function() {
+$("#buttons-list").on("click", "button", function () {
     var buttonId = $(this).attr("id");
     var cityName = $(this).html();
     searchCity(buttonId, cityName);
 
-  });
+});
