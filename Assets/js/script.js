@@ -10,83 +10,63 @@ let searchBtn = '';
 var cityBtnList = [];
 
 function getCurrentWeather(city) {
-
-    // https://api.openweathermap.org/data/2.5/weather?q=Roma&appid=6180d0bfb66b0a537a54cd4b60470c4d
-    // https://api.openweathermap.org/data/2.5/weather?q=roma&appid=6180d0bfb66b0a537a54cd4b60470c4d
-
-
-    //console.log('Get current weather for the city: '+ city);
     var requestUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=imperial`
     $.get(requestUrl, function (response) {
-        var currentCity= city+' - '
-       var currentDate = dayjs().format("MM/DD/YYYY");
+        var currentCity = city + ' - '
+        var currentDate = dayjs().format("MM/DD/YYYY");
         var todayData = response.list[0];
         var iconUrl = `https://openweathermap.org/img/w/${todayData.weather[0].icon}.png`;
-        var tempF = 'Temp: '+todayData.main.temp+ '°F';
-        var windSpeedMph = 'Wind: '+todayData.wind.speed+ 'MPH';
-        var humidity = 'Humidity: '+todayData.main.humidity +'%';
-
-        console.log('Citi is ' +city+' - ');
-        console.log('Data is ' +currentDate);
-        console.log('Icon is '+ iconUrl);
-        console.log('Temp is' + tempF);
-        console.log('Wind is'+windSpeedMph);
-        console.log('Humidity is '+humidity);
-
-        // Display the extracted data in the HTML
+        var tempF = 'Temp: ' + todayData.main.temp + '°F';
+        var windSpeedMph = 'Wind: ' + todayData.wind.speed + 'MPH';
+        var humidity = 'Humidity: ' + todayData.main.humidity + '%';
+        // Display the extracted data in the Current Weather html section
         $("#nameCurrent").text(currentCity);
         $("#dateCurrent").text(currentDate);
         $("#imgCurrent").attr("src", iconUrl);
         $("#tempCurrent").text(tempF);
         $("#windCurrent").text(windSpeedMph);
         $("#humidityCurrent").text(humidity);
+        
+        if ($("#five-days-weather .card").length > 0) {
+            // If there are, remove them
+            $("#five-days-weather .card").remove();
+          }
+        //Get data for next five days
+        //var daysDataArray = [response.list[8], response.list[16], response.list[24], response.list[32], response.list[40]]
+        // Extract data for the next 5 days
+        for (var i = 1; i <= 5; i++) {
+            var forecastData = response.list[i * 8 - 1];
+            var date = dayjs(forecastData.dt_txt).format('MM/DD/YYYY');
+            var forecastIconUrl = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
+            var forecastTempF = forecastData.main.temp;
+            var forecastWindSpeedMph = forecastData.wind.speed;
+            var forecastHumidity = forecastData.main.humidity;
+            //create cards container
+            var div = $('<div>').attr('id', 'five-days-weather').addClass('d-flex flex-wrap justify-content-between align-items-center border-2-purple');
+            var h3 = $('<h3>').addClass('row'); 
+            // create five divs with cards
+            for (var i = 0; i < 5; i++) {
+                var card = $('<div>').addClass('card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2');
+                var cardBody = $('<div>').addClass('card-body');
+                var date = $('<h5>').addClass('card-date').text(date).attr('id', 'forecast-date-' + i);
+                var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', forecastIconUrl).attr('alt', 'weather icon').attr('id', 'forecast-icon-' + i);
+                var temp = $('<p>').addClass('card-temp').text('Temp: '+forecastTempF + '°F').attr('id', 'forecast-temp-f-' + i);
+                var wind = $('<p>').addClass('card-wind').text('Wind: '+forecastWindSpeedMph+ 'MPH').attr('id', 'forecast-wind-mph-' + i);
+                var humidity = $('<p>').addClass('card-humidity').text('Humidity: '+ forecastHumidity +'%').attr('id', 'forecast-humidity-' + i);
+                cardBody.append(date, icon, temp, wind, humidity);
+                card.append(cardBody);
+                div.append(card);
+
+            }
+
+            // add the 'five-days-weather' div to the body of the HTML document
+            $('#parrentDiv').append(div);
+            $('#parrentDiv').append(h3);
+
+        }
+
     });
-    //console.log(requestUrl);    
-    // fetch(requestUrl)
-    // .then(response => response.json())
-    // .then(data => {
-    //   const weatherData = `
-    //     <p>Weather: ${data.weather[0].main}</p>
-    //     <p>Description: ${data.weather[0].description}</p>
-    //     <p>Temperature: ${data.main.temp} K</p>
-    //     <p>Humidity: ${data.main.humidity}%</p>
-    //   `;
-    //   //document.getElementById('current-weather').innerHTML = weatherData; //replace jquery
-    // })
-    // .catch(error => console.error(error));
 }
-
-
-
-
-
-
-
-/**This function will get wether forecast for the city selcted by user from openweather API
- * inputFromField (string) - city name entered by user as a search criteria
- */
-// function getCity(inputFromField){
-//     // var inputFromField1 = 'atlanta';
-//     // var  API_KEY = '6180d0bfb66b0a537a54cd4b60470c4d';
-//     var url="https://api.openweathermap.org/geo/1.0/direct?q=" + inputFromField1 + "&limit=1&appid=6180d0bfb66b0a537a54cd4b60470c4" //use my appid
-//     // fetch(url){
-//     //     ...
-//     // }
-//     // .then(data){
-//         data=[{"name":"Philadelphia","local_names":{"tr":"Filadelfiya","pl":"Filadelfia","oc":"Filadèlfia","ar":"فيلادلفيا","ja":"フィラデルフィア","pt":"Filadélfia","ko":"필라델피아","ur":"فلاڈیلفیا","en":"Philadelphia","fa":"فیلادلفیا","he":"פילדלפיה","es":"Filadelfia","fr":"Philadelphie","cs":"Filadelfie","be":"Філадэльфія","zh":"費城","ta":"பிலடெல்பியா","lv":"Filadelfija","uk":"Філадельфія","kn":"ಫಿಲಡೆಲ್ಫಿಯ","it":"Filadelfia","ru":"Филадельфия","ca":"Filadèlfia","hi":"फिलाडेल्फिया","te":"ఫిలడెల్ఫియా"},"lat":39.9527237,"lon":-75.1635262,"country":"US","state":"Pennsylvania"}]
-//         var lat = data[0].lat;
-//         var lon = data[0].lon;
-//     console.log(lat + ", " + lon);
-//     getWeatherCurrent(lat,lon);
-//     // }
-// }
-// function getWeatherCurrent(lat, lon){
-
-// console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=496722594d14437755a15609505942d8`)
-// }
-
-
-
 
 /**
  * This function  search city based on the user input and adding city button for predefined search
@@ -109,7 +89,6 @@ function renderCityButton(city) {
     if ($.inArray(city, cityBtnList) !== -1) {
         return; // Exit the function
     } else {
-        console.log('User input does not match any array values.');
         var newButton = $('<button>', {
             id: cityBtnList.length,
             class: 'btn btn-secondary',
@@ -145,15 +124,16 @@ $(document).ready(function () {
     });
     $('.list-group button').each(function () {
         // 
-
+        console.log('other buttons');
         $(this).click(function () {
             searchBtn = $(this).attr('id');
             cityName = $(this).text();
-            // console.log($(this).text()+' button is selected');
-            searchCity(searchBtn, cityName);
+             console.log($(this).text()+' button is selected');
+           // searchCity(searchBtn, cityName);
             //ToDo - render new element
             //ToDo - execute weather search
         });
+
         //     // Get the ID of the button
         //     var buttonID = $(this).attr('id');
         //     // Get the text content of the button
