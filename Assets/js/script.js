@@ -35,6 +35,7 @@ function getCurrentWeather(city) {
         if ($("#five-days-weather .card").length > 0) {
             // If there are, remove them
             $("#five-days-weather .card").remove();
+            $("#five-days-weather").remove();
           }
         //Get data for next five days
         //var daysDataArray = [response.list[8], response.list[16], response.list[24], response.list[32], response.list[40]]
