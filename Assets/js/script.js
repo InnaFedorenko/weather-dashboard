@@ -61,6 +61,13 @@ function getCurrentWeather(city) {
             $('#five-days-weather').append(div);
 
         }
+    }).fail(function(xhr, status, error) {
+        var response = xhr.responseJSON;
+        if (response && response.cod && response.cod !== '200') {
+            alert("Error: " + response.message);
+        } else {
+            alert("Error: " + error);
+        }
     });
     return;
 }
