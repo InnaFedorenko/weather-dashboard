@@ -50,18 +50,18 @@
         <div id="current-weather" class="card row">
           <!-- <img src="..." class="card-img-top" alt="..."> -->
           <div class="d-flex align-items-center">
-            <h3 class="card-city mr-5 mb-0 ">City Name</h3>
-            <h3 class="card-date mr-5 mb-0 ">(mm/dd/yyyy)</3>
-              <img src="assets/img/weather_icon.png" class="card-img-top weather-img mr-5 mb-0" alt="weather icon">
+            <h3 id="nameCurrent" class="card-city mr-5 mb-0 ">City Name</h3>
+            <h3 id="dateCurrent" class="card-date mr-5 mb-0 ">(mm/dd/yyyy)</3>
+              <img id="imgCurrent" src="assets/img/weather_icon.png" class="card-img-top weather-img mr-5 mb-0"
+                alt="weather icon">
           </div>
           <div>
-
-            <p class="card-temp">Temp:</p>
-            <p class="card-wind">Wind:</p>
-            <p class="card-humidity">Humidity:</p>
+            <p id="tempCurrent" class="card-temp">Temp:</p>
+            <p id="windCurrent" class="card-wind">Wind:</p>
+            <p id="humidityCurrent" class="card-humidity">Humidity:</p>
           </div>
         </div>
-        <h3 class="row">5 Days Forecast:</h3>
+        <h3 class="row">5-Day Forecast:</h3>
         <div id="five-days-weather" class="d-flex flex-wrap justify-content-between align-items-center border-2-purple">
           <div class="card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2">
             <div class="card-body">
@@ -121,6 +121,9 @@
     crossorigin="anonymous"></script>
   <!-- connecting jquery -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!-- Link the DayJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
   <!-- connecting my script -->
   <script src="assets/js/script.js"></script>
 </body>
