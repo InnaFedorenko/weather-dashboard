@@ -26,8 +26,6 @@ function getCurrentWeather(city) {
           }
         var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', iconUrl).attr('alt', 'weather icon').attr('id', 'imgCurrent');
         $('#current-flex-box').append(icon);
-       // $('#imgCurrent').attr('src', iconUrl);
-       // $("#imgCurrent").attr("src", `https://openweathermap.org/img/w/${todayData.weather[0].icon}.png`);
         $("#tempCurrent").text(tempF);
         $("#windCurrent").text(windSpeedMph);
         $("#humidityCurrent").text(humidity);
@@ -38,22 +36,18 @@ function getCurrentWeather(city) {
             $("#five-days-weather").remove();
           }
         //Get data for next five days
-        //var daysDataArray = [response.list[8], response.list[16], response.list[24], response.list[32], response.list[40]]
         var div = $('<div>').attr('id', 'five-days-weather').addClass('d-flex flex-wrap justify-content-between align-items-center border-2-purple');
         $('#parrentDiv').append(div);
         // Extract data for the next 5 days
         for (var i = 1; i <= 5; i++) {
             var forecastData = response.list[i * 8 - 1];
-            console.log('forecastData '+forecastData.dt_txt); 
+            // console.log('forecastData '+forecastData.dt_txt); 
             var date = dayjs(forecastData.dt_txt).format('MM/DD/YYYY');
             var forecastIconUrl = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
             var forecastTempF = forecastData.main.temp;
             var forecastWindSpeedMph = forecastData.wind.speed;
             var forecastHumidity = forecastData.main.humidity;
             //create cards container
-
-            // create five divs with cards
-           // for (var i = 0; i < 5; i++) {
                 var card = $('<div>').addClass('card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2');
                 var cardBody = $('<div>').addClass('card-body');
                 var date = $('<h5>').addClass('card-date').text(date).attr('id', 'forecast-date-' + i);
@@ -64,17 +58,11 @@ function getCurrentWeather(city) {
                 cardBody.append(date, icon, temp, wind, humidity);
                 card.append(cardBody);
                 div.append(card);
-
-           // }
-
-            // add the 'five-days-weather' div to the body of the HTML document
             $('#five-days-weather').append(div);
-            // $('#parrentDiv').append(h3);
 
         }
-        
-
     });
+    return;
 }
 
 /**
@@ -87,12 +75,6 @@ function searchCity(button, city) {
     return;
 }
 
-function init() {
-    // console.log('script is connected');
-    // Define click event handlers for each button
-    //ToDo - reads buttons from local storage
-
-}
 function renderCityButton(city) {
     // Create a new button element with text and an ID
     if ($.inArray(city, cityBtnList) !== -1) {
@@ -103,16 +85,18 @@ function renderCityButton(city) {
             class: 'btn btn-secondary',
             text: city
         });
+          // Add the onclick event to the new button
+
         // Append the new button element to the list-group div
         $('.list-group').append(newButton);
         return;
-        // Continue with the function
     }
 
 }
 
 $(document).ready(function () {
-    init();
+    //init();
+   // console.log('other buttons list 0');
     $('#searchBtn').click(function () {
         //console.log('search button is selected - 0');
         searchBtn = $(this).attr('id');
@@ -129,28 +113,13 @@ $(document).ready(function () {
         // Clear user input
         cityName = '';
         $('#searchInput').val(cityName);
-        //ToDo - execute weather search
+        return;
     });
-    $('.list-group button').each(function () {
-        // 
-        console.log('other buttons');
-        $(this).click(function () {
-            searchBtn = $(this).attr('id');
-            cityName = $(this).text();
-             console.log($(this).text()+' button is selected');
-           // searchCity(searchBtn, cityName);
-            //ToDo - render new element
-            //ToDo - execute weather search
-        });
-
-        //     // Get the ID of the button
-        //     var buttonID = $(this).attr('id');
-        //     // Get the text content of the button
-        //     var buttonText = $(this).text();
-        //     // Log the ID and text content of the button to the console
-        //     console.log('Button ID: ' + buttonID + ', Text Content: ' + buttonText);
-        //     searchCity(searchBtn, cityName);
-    });
-    return;
 });
-//getCity("philadelphia")
+
+$("#buttons-list").on("click", "button", function() {
+    var buttonId = $(this).attr("id");
+    var cityName = $(this).html();
+    searchCity(buttonId, cityName);
+
+  });
