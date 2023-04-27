@@ -1,5 +1,3 @@
-var requestUrl = 'https://dog-api.kinduff.com/api/facts?number=13';
-//https://api.github.com/
 
 //https://api.openweathermap.org/data/2.5/weather?q=atlanta&appid=6180d0bfb66b0a537a54cd4b60470c4d
 //https://api.openweathermap.org/data/2.5/forecast?q=Roma&appid=6180d0bfb66b0a537a54cd4b60470c4d&units=imperial
@@ -13,8 +11,8 @@ function getCurrentWeather(city) {
     var requestUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=imperial`
     $.get(requestUrl, function (response) {
         var currentCity = city + ' - '
-        var currentDate = dayjs().format("MM/DD/YYYY");
         var todayData = response.list[0];
+        var currentDate = dayjs(todayData.dt_txt).format('MM/DD/YYYY');
         var iconUrl = `https://openweathermap.org/img/w/${todayData.weather[0].icon}.png`;
         var tempF = 'Temp: ' + todayData.main.temp + '°F';
         var windSpeedMph = 'Wind: ' + todayData.wind.speed + 'MPH';
@@ -22,7 +20,14 @@ function getCurrentWeather(city) {
         // Display the extracted data in the Current Weather html section
         $("#nameCurrent").text(currentCity);
         $("#dateCurrent").text(currentDate);
-        $("#imgCurrent").attr("src", iconUrl);
+        if ($("#imgCurrent").length > 0) {
+            // If there are, remove them
+            $("#imgCurrent").remove();
+          }
+        var icon = $('<img>').addClass('card-img-top weather-img mr-5 mb-0').attr('src', iconUrl).attr('alt', 'weather icon').attr('id', 'imgCurrent');
+        $('#current-flex-box').append(icon);
+       // $('#imgCurrent').attr('src', iconUrl);
+       // $("#imgCurrent").attr("src", `https://openweathermap.org/img/w/${todayData.weather[0].icon}.png`);
         $("#tempCurrent").text(tempF);
         $("#windCurrent").text(windSpeedMph);
         $("#humidityCurrent").text(humidity);
@@ -33,19 +38,21 @@ function getCurrentWeather(city) {
           }
         //Get data for next five days
         //var daysDataArray = [response.list[8], response.list[16], response.list[24], response.list[32], response.list[40]]
+        var div = $('<div>').attr('id', 'five-days-weather').addClass('d-flex flex-wrap justify-content-between align-items-center border-2-purple');
+        $('#parrentDiv').append(div);
         // Extract data for the next 5 days
         for (var i = 1; i <= 5; i++) {
             var forecastData = response.list[i * 8 - 1];
+            console.log('forecastData '+forecastData.dt_txt); 
             var date = dayjs(forecastData.dt_txt).format('MM/DD/YYYY');
             var forecastIconUrl = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
             var forecastTempF = forecastData.main.temp;
             var forecastWindSpeedMph = forecastData.wind.speed;
             var forecastHumidity = forecastData.main.humidity;
             //create cards container
-            var div = $('<div>').attr('id', 'five-days-weather').addClass('d-flex flex-wrap justify-content-between align-items-center border-2-purple');
-            var h3 = $('<h3>').addClass('row'); 
+
             // create five divs with cards
-            for (var i = 0; i < 5; i++) {
+           // for (var i = 0; i < 5; i++) {
                 var card = $('<div>').addClass('card col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2');
                 var cardBody = $('<div>').addClass('card-body');
                 var date = $('<h5>').addClass('card-date').text(date).attr('id', 'forecast-date-' + i);
@@ -57,13 +64,14 @@ function getCurrentWeather(city) {
                 card.append(cardBody);
                 div.append(card);
 
-            }
+           // }
 
             // add the 'five-days-weather' div to the body of the HTML document
-            $('#parrentDiv').append(div);
-            $('#parrentDiv').append(h3);
+            $('#five-days-weather').append(div);
+            // $('#parrentDiv').append(h3);
 
         }
+        
 
     });
 }
