@@ -104,6 +104,7 @@ function init() {
     console.log('read data from local Storage');
     var cityBtnList = JSON.parse(localStorage.getItem('searchHistory'));
     console.log(cityBtnList);
+    if (!cityBtnList){return};
     // Generate buttons for each city name
     for (var i = 0; i < cityBtnList.length; i++) {
         var cityName = cityBtnList[i];
