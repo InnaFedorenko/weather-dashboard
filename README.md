@@ -3,7 +3,7 @@
 * Developed by : Inna Fedorenko
 * Date: April 2023
 * Tech stack: HTML, CSS (bootstrap), JS (jQuery)
-* [Git Repository: ](https://github.com/InnaFedorenko/work-day-scheduler);
+* [Git Repository: ](https://github.com/InnaFedorenko/weather-dashboard);
 * [Weather Dashboard site: ](https://innafedorenko.github.io/weather-dashboard/);
 
 ### Screenshot
